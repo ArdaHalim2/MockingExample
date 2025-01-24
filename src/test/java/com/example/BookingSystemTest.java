@@ -121,4 +121,20 @@ public class BookingSystemTest {
         verify(roomRepository).save(any(Room.class));
         verify(notificationService).sendCancellationConfirmation(any(Booking.class));
     }
+
+    @Test
+    void shouldThrowExceptionWhenCancellingStartedOrFinishedBooking() {
+        LocalDateTime startTime = LocalDateTime.now().minusHours(1);
+        LocalDateTime endTime = LocalDateTime.now().minusMinutes(30);
+        Booking booking = new Booking("booking-id", "1", startTime, endTime);
+        room.addBooking(booking);
+
+        when(timeProvider.getCurrentTime()).thenReturn(LocalDateTime.now());
+        when(roomRepository.findAll()).thenReturn(List.of(room));
+
+        assertThatThrownBy(() -> bookingSystem.cancelBooking("booking-id"))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("Kan inte avboka påbörjad eller avslutad bokning");
+    }
+
 }
