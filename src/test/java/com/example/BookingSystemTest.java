@@ -137,4 +137,10 @@ public class BookingSystemTest {
                 .hasMessageContaining("Kan inte avboka påbörjad eller avslutad bokning");
     }
 
+    @Test
+    void shouldReturnFalseWhenBookingIdNotFound() {
+        boolean result = bookingSystem.cancelBooking("invalid-booking-id");
+
+        assertThat(result).isFalse();
+    }
 }
