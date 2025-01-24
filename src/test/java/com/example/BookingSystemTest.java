@@ -9,14 +9,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class BookingSystemTest {
 
@@ -84,4 +84,24 @@ public class BookingSystemTest {
         );
     }
 
+    @Test
+    void shouldReturnAvailableRooms() {
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(2);
+
+        Room room1 = mock(Room.class);
+        Room room2 = mock(Room.class);
+        when(roomRepository.findAll()).thenReturn(List.of(room1, room2));
+
+        when(room1.isAvailable(startTime, endTime)).thenReturn(true);
+        when(room2.isAvailable(startTime, endTime)).thenReturn(false);
+
+        when(room1.getId()).thenReturn("1");
+        when(room2.getId()).thenReturn("2");
+
+        var availableRooms = bookingSystem.getAvailableRooms(startTime, endTime);
+
+        assertThat(availableRooms).hasSize(1);
+        assertThat(availableRooms.get(0).getId()).isEqualTo("1");
+    }
 }
