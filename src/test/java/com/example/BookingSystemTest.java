@@ -104,4 +104,21 @@ public class BookingSystemTest {
         assertThat(availableRooms).hasSize(1);
         assertThat(availableRooms.get(0).getId()).isEqualTo("1");
     }
+
+    @Test
+    void shouldCancelBookingSuccessfully() throws NotificationException {
+        LocalDateTime startTime = LocalDateTime.now().plusHours(1);
+        LocalDateTime endTime = startTime.plusHours(2);
+        Booking booking = new Booking("booking-id", "1", startTime, endTime);
+        room.addBooking(booking);
+
+        when(timeProvider.getCurrentTime()).thenReturn(LocalDateTime.now());
+        when(roomRepository.findAll()).thenReturn(List.of(room));
+
+        boolean result = bookingSystem.cancelBooking("booking-id");
+
+        assertThat(result).isTrue();
+        verify(roomRepository).save(any(Room.class));
+        verify(notificationService).sendCancellationConfirmation(any(Booking.class));
+    }
 }
