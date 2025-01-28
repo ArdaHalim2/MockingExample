@@ -3,6 +3,8 @@ package com.example;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class ShoppingCartTest {
 
     private ShoppingCart shoppingCart;
@@ -31,4 +33,16 @@ public class ShoppingCartTest {
 
         assertThat(shoppingCart.getTotalPrice()).isEqualTo(100.0);
     }
+
+    @Test
+    void shouldCalculateTotalPrice() {
+        Product product1 = new Product("Product 1", 100.0);
+        Product product2 = new Product("Product 2", 200.0);
+
+        shoppingCart.addProduct(product1, 2);
+        shoppingCart.addProduct(product2, 1);
+
+        assertThat(shoppingCart.getTotalPrice()).isEqualTo(400.0);
+    }
+
 }
