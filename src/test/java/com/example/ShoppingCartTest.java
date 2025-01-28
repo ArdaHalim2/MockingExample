@@ -20,7 +20,7 @@ public class ShoppingCartTest {
 
         shoppingCart.addProduct(product, 2);
 
-        asssertThat(shoppingCart.getTotalPrice()).isEqualTo(200.0);
+        assertThat(shoppingCart.getTotalPrice()).isEqualTo(200.0);
     }
 
     @Test
