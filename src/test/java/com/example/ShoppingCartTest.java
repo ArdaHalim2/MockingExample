@@ -45,4 +45,14 @@ public class ShoppingCartTest {
         assertThat(shoppingCart.getTotalPrice()).isEqualTo(400.0);
     }
 
+    @Test
+    void shouldApplyDiscountCorrectly() {
+        Product product1 = new Product("Product 1", 100.0);
+        shoppingCart.addProduct(product1, 2);
+
+        shoppingCart.applyDiscount(0.1);
+
+        assertThat(shoppingCart.getTotalPrice()).isEqualTo(180.0);
+    }
+
 }
