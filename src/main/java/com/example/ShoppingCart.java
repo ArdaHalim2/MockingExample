@@ -20,4 +20,12 @@ public class ShoppingCart {
         }
     }
 
+    public void updateQuantity(Product product, int newQuantity) {
+        if (newQuantity > 0) {
+            products.put(product, newQuantity);
+        } else {
+            products.remove(product);
+        }
+    }
+
 }
