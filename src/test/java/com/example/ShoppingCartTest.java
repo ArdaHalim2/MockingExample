@@ -55,4 +55,14 @@ public class ShoppingCartTest {
         assertThat(shoppingCart.getTotalPrice()).isEqualTo(180.0);
     }
 
+    @Test
+    void shouldUpdateQuantityCorrectly() {
+        Product product = new Product("Product 1", 100.0);
+        shoppingCart.addProduct(product, 2);  // Lägg till 2 produkter
+
+        shoppingCart.updateQuantity(product, 3);  // Uppdatera till 3 produkter
+
+        assertThat(shoppingCart.getTotalPrice()).isEqualTo(300.0);  // Totalpris = 100.0 * 3
+    }
+
 }
