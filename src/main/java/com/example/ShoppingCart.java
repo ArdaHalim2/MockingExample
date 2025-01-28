@@ -28,4 +28,14 @@ public class ShoppingCart {
         }
     }
 
+    public void applyDiscount(double discount) {
+        this.discount = discount;
+    }
+
+    public double getTotalPrice() {
+        return products.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum() * (1 - discount);
+    }
+
 }
